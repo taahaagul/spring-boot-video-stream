@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("video")
+@RequestMapping("/video")
 @AllArgsConstructor
 public class VideoController {
     private VideoService videoService;
@@ -25,7 +25,7 @@ public class VideoController {
         return ResponseEntity.ok("Video saved successfully");
     }
 
-    @GetMapping("{name}")
+    @GetMapping("/{name}")
     public ResponseEntity<byte[]> getVideoByName(@PathVariable("name") String name){
         byte[] data = videoService.getVideo(name);
         HttpHeaders headers = new HttpHeaders();
@@ -34,7 +34,7 @@ public class VideoController {
         return new ResponseEntity<byte[]>(data, headers, HttpStatus.OK);
     }
 
-    @GetMapping("all")
+    @GetMapping("/all")
     public ResponseEntity<List<String>> getAllVideoNames() {
         return ResponseEntity.ok(videoService.getAllVideoNames());
     }
