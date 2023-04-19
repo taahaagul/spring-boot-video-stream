@@ -1,9 +1,8 @@
 package com.taahaagul.streaming.controllers;
 
 import com.taahaagul.streaming.services.VideoService;
-import jakarta.annotation.Resource;
 import lombok.AllArgsConstructor;
-import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,11 +26,12 @@ public class VideoController {
     }
 
     @GetMapping("{name}")
-    public ResponseEntity<Resource> getVideoByName(@PathVariable("name") String name) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .body((Resource) new ByteArrayResource(videoService.getVideo(name).getData()));
+    public ResponseEntity<byte[]> getVideoByName(@PathVariable("name") String name){
+        byte[] data = videoService.getVideo(name);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentLength(data.length);
+        return new ResponseEntity<byte[]>(data, headers, HttpStatus.OK);
     }
 
     @GetMapping("all")
