@@ -15,6 +15,7 @@ public class Video {
     @Column(unique = true)
     private String name;
     @Lob
+    @Column(name = "data", columnDefinition = "LONGBLOB")
     private byte[] data;
 
     public Video(String name, byte[] data) {
