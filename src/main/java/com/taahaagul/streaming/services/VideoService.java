@@ -16,19 +16,16 @@ import java.util.List;
 public class VideoService {
     private VideoRepository videoRepository;
 
-    public byte[] getVideo(String name) {
+    public Video getVideo(String name) {
         if(!videoRepository.existsByName(name))
             throw new VideoNotFoundException();
-
-        Video video = videoRepository.findByName(name);
-        return video.getData();
+        return videoRepository.findByName(name);
     }
 
     public void saveVideo(MultipartFile file, String name) throws IOException {
         if(videoRepository.existsByName(name)) {
             throw new VideoAlreadyExistsException();
         }
-
         Video newVideo = new Video(name, file.getBytes());
         videoRepository.save(newVideo);
     }
